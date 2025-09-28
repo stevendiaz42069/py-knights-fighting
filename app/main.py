@@ -1,4 +1,3 @@
-from app.character.fighters import knights
 from app.character.character_builds import apply_upgrades
 
 
@@ -27,7 +26,3 @@ def battle(knights: dict) -> dict:
 
     # Return results
     return {k["name"]: k["hp"] for k in knights.values()}
-
-
-if __name__ == "__main__":
-    print(battle(knights))

@@ -16,5 +16,5 @@ def apply_upgrades(knight: dict) -> None:
 
 
 def builds(knights: dict) -> None:
-    for name in ["lancelot", "arthur", "mordred", "red_knight"]:
-        apply_upgrades(knights[name])
+    for knight in knights.values():
+        apply_upgrades(knight)
