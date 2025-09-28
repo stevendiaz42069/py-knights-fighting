@@ -1,6 +1,7 @@
 def apply_upgrades(knight: dict) -> None:
     # Apply armour
-    knight["protection"] = sum(a["protection"] for a in knight["armour"])
+    knight["protection"] = sum(
+        a["protection"] for a in knight.get("armour", []))
 
     # Apply weapon
     knight["power"] += knight["weapon"]["power"]

@@ -2,37 +2,32 @@ from app.character.fighters import knights
 from app.character.character_builds import apply_upgrades
 
 
-def battle(knights: dict) -> None:
-    # Apply upgrades to all knights
+def run_round(k1: dict, k2: dict) -> None:
+    dmg_to_k1 = k2["power"] - k1["protection"]
+    dmg_to_k2 = k1["power"] - k2["protection"]
+    k1["hp"] -= dmg_to_k1
+    k2["hp"] -= dmg_to_k2
+
+
+def battle(knights: dict) -> dict:
+    # Apply upgrades
     for knight in knights.values():
         apply_upgrades(knight)
 
-    # -------------------------------------------------------------------------------
-    # BATTLE:
-    lancelot = knights["lancelot"]
-    mordred = knights["mordred"]
-    red_knight = knights["red_knight"]
-    arthur = knights["arthur"]
+    # Define battle pairs
+    pairs = [("lancelot", "mordred"), ("arthur", "red_knight")]
 
-    # 1 Lancelot vs Mordred:
-    lancelot["hp"] -= max(0, mordred["power"] - lancelot["protection"])
-    mordred["hp"] -= max(0, lancelot["power"] - mordred["protection"])
+    # Run battles
+    for k1_name, k2_name in pairs:
+        run_round(knights[k1_name], knights[k2_name])
 
-    # 2 Arthur vs Red Knight:
-    arthur["hp"] -= max(0, red_knight["power"] - arthur["protection"])
-    red_knight["hp"] -= max(0, arthur["power"] - red_knight["protection"])
-
-    # Clamp HP to zero
-    for knight in [lancelot, mordred, arthur, red_knight]:
+    # Clamp HPs
+    for knight in knights.values():
         knight["hp"] = max(0, knight["hp"])
 
-    # Return battle results:
-    return {
-        lancelot["name"]: lancelot["hp"],
-        arthur["name"]: arthur["hp"],
-        mordred["name"]: mordred["hp"],
-        red_knight["name"]: red_knight["hp"],
-    }
+    # Return results
+    return {k["name"]: k["hp"] for k in knights.values()}
 
 
-print(battle(knights))
+if __name__ == "__main__":
+    print(battle(knights))
